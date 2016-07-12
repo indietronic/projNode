@@ -31,3 +31,6 @@ app.use(require('./controllers'));
 app.use(express.static(__dirname + '/../front-end'));
 
 app.listen(9999);
+ app.get('/', function(req, res){
+     res.redirect('/home.html');
+ });
