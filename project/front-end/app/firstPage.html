@@ -1,0 +1,53 @@
+<div class="container">
+
+    <div ng-controller="firstController" class="row">
+        <div class="col-lg-2">
+            <button ng-click="callService()" class="form-control btn btn-default"><span></span>Ottieni info</button>
+        </div>
+        <div class="row">
+            <div class="col-lg-2">
+                <label></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <label>Nome calciatore: </label> <label>{{calciatore.nome}}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <label>Cognome calciatore: </label> <label>{{calciatore.cognome}}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <label>Altezza: </label> <label>{{calciatore.fisico.altezza}}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <label>Peso: </label> <label>{{calciatore.fisico.peso}}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <label>Ruolo: </label> <label>{{calciatore.ruolo}}</label>
+            </div>
+        </div>
+
+
+        <div class="row">
+
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="inputSearch">Cerca: </label>
+                    <input type="text" class="form-control" id="inputSearch">
+                </div>
+
+            </form>
+
+        </div>
+
+
+    </div>
+</div>
