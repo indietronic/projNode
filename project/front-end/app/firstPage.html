@@ -1,52 +1,65 @@
 <div class="container">
 
     <div ng-controller="firstController" class="row">
-        <div class="col-lg-2">
-            <button ng-click="callService()" class="form-control btn btn-default"><span></span>Ottieni info</button>
-        </div>
-        <div class="row">
-            <div class="col-lg-2">
-                <label></label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-8">
-                <label>Nome calciatore: </label> <label>{{calciatore.nome}}</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-8">
-                <label>Cognome calciatore: </label> <label>{{calciatore.cognome}}</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-8">
-                <label>Altezza: </label> <label>{{calciatore.fisico.altezza}}</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-8">
-                <label>Peso: </label> <label>{{calciatore.fisico.peso}}</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-8">
-                <label>Ruolo: </label> <label>{{calciatore.ruolo}}</label>
-            </div>
-        </div>
+        <!--<div class="col-lg-2">-->
+        <!--<button ng-click="getGiocatore()" class="form-control btn btn-default"><span></span>Ottieni info</button>-->
+        <!--</div>-->
+        <!--<div class="row">-->
+        <!--<div class="col-lg-2">-->
+        <!--<label></label>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row">-->
+        <!--<div class="col-lg-8">-->
+        <!--<label>Nome calciatore: </label> <label>{{calciatore.nome}}</label>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row">-->
+        <!--<div class="col-lg-8">-->
+        <!--<label>Cognome calciatore: </label> <label>{{calciatore.cognome}}</label>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row">-->
+        <!--<div class="col-lg-8">-->
+        <!--<label>Altezza: </label> <label>{{calciatore.fisico.altezza}}</label>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row">-->
+        <!--<div class="col-lg-8">-->
+        <!--<label>Peso: </label> <label>{{calciatore.fisico.peso}}</label>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row">-->
+        <!--<div class="col-lg-8">-->
+        <!--<label>Ruolo: </label> <label>{{calciatore.ruolo}}</label>-->
+        <!--</div>-->
+        <!--</div>-->
 
 
+        <div class="search-form">
+            <form class="form-horizontal margin-top100" role="form">
+                <pre>Model: {{searchInputModel | json}}</pre>
+                <div class="form-group form-group-lg">
+                    <label class="col-lg-2 control-label" for="lg">Nome: </label>
+                    <div class="col-lg-6">
 
+                        <input class="form-control"
+                               type="text"
+                               id="lg"
+                               ng-model="searchInputModel"
+                               uib-typeahead="giocatore as (giocatore.nome + ' ' + giocatore.cognome) for giocatore in getListaGiocatori($viewValue) | limitTo:1"
+                               typeahead-loading="loadingLocations"
+                               typeahead-no-results="noResults"
+                               typeahead-min-length="2">
+                        <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
 
-        <form class="form-horizontal" role="form">
-            <div class="form-group form-group-lg">
-                <label class="col-lg-offset-1 col-lg-2 control-label" for="lg">Cerca: </label>
-                <div class="col-lg-6">
-                    <input class="form-control" type="text" id="lg">
+                    </div>
+                    <div class="col-lg-2">
+                        <button>Cerca</button>
+                    </div>
                 </div>
-            </div>
-        </form>
-
+            </form>
+        </div>
 
     </div>
 </div>

@@ -49,14 +49,17 @@
 var express = require('express');
 var router = express.Router();
 
+var _ = require('underscore');
+_.str = require('underscore.string');
+
 var GiocatoriDAO = require("../dao/GiocatoriDAO");
 
 
 var ROLE = {
-    ATT : "ATT",
+    ATT: "ATT",
     CEN: "CEN",
-    DIF : "DIF",
-    POR : "POR"
+    DIF: "DIF",
+    POR: "POR"
 };
 
 // SERVIZIO getGiocatoreByNome
@@ -76,7 +79,11 @@ router.post('/getListaGiocatori', function (req, res) {
     console.log("getGiocatore service");
     GiocatoriDAO.getAllPlayers().then(function (data) {
             var giocatori = JSON.parse(JSON.stringify(data));
-
+            giocatori = _.filter(giocatori, function (giocatore) {
+                var checkNome = _.str.startsWith(giocatore.nome.toUpperCase(), req.body.query.toUpperCase());
+                var checkCognome = _.str.startsWith(giocatore.cognome.toUpperCase(), req.body.query.toUpperCase());
+                return checkNome || checkCognome;
+            });
             res.send(giocatori);
         },
         function (error) {
