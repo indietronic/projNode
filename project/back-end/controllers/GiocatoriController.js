@@ -82,7 +82,9 @@ router.post('/getListaGiocatori', function (req, res) {
             giocatori = _.filter(giocatori, function (giocatore) {
                 var checkNome = _.str.startsWith(giocatore.nome.toUpperCase(), req.body.query.toUpperCase());
                 var checkCognome = _.str.startsWith(giocatore.cognome.toUpperCase(), req.body.query.toUpperCase());
-                return checkNome || checkCognome;
+                var entireName = giocatore.nome.toUpperCase() + " " +  giocatore.cognome.toUpperCase();
+                var checkEntireName = _.str.startsWith(entireName, req.body.query.toUpperCase());
+                return checkNome || checkCognome || checkEntireName;
             });
             res.send(giocatori);
         },

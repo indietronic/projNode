@@ -48,10 +48,10 @@
                                id="lg"
                                ng-model="searchInputModel"
                                uib-typeahead="giocatore as (giocatore.nome + ' ' + giocatore.cognome) for giocatore in getListaGiocatori($viewValue) | limitTo:1"
-                               typeahead-loading="loadingLocations"
+                               typeahead-loading="loading"
                                typeahead-no-results="noResults"
                                typeahead-min-length="2">
-                        <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+                        <i ng-show="loading" class="glyphicon glyphicon-refresh"></i>
 
                     </div>
                     <div class="col-lg-2">

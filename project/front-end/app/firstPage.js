@@ -31,8 +31,8 @@ var application = angular.module('myApp');
 
     application.factory('CommunicationService', ['$http', '$q', function ($http) {
         return {
-            'serviceCaller': function(backEndUrl, request ){
-                var url = "http://localhost:9999/" + backEndUrl;
+            'serviceCaller': function(servicePath, request ){
+                var url = "http://localhost:9999/" + servicePath;
                 return $http.post(url, request)
                     .success(function(data) {
                         return data;
