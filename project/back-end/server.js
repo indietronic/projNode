@@ -26,6 +26,9 @@ var app = express();
 
 var bodyParser = require('body-parser');
 
+var CacheManager = require('./cache/CacheManager');
+
+CacheManager.setGlobal();
 
 app.use(bodyParser.json());
 

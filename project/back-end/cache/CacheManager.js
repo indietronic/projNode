@@ -3,6 +3,8 @@ var NodeCache = require( "node-cache" );
 var cache = new NodeCache( { stdTTL: 100, checkperiod: 120 } );
 var CacheMap = require("./CacheMap");
 
+var global =undefined;
+
 CacheManager.set = function (cacheKey, obj, name) {
     var ttl = getTTLByCacheName(name);
     cache.set( cacheKey, obj, ttl, function(err, success ){
@@ -39,6 +41,14 @@ CacheManager.delete = function (cacheKey) {
             console.log( count );
         }
     });
+};
+
+CacheManager.setGlobal = function(){
+  global = "instanced";
+};
+
+CacheManager.getGlobal = function(){
+    return global;
 };
 
 
