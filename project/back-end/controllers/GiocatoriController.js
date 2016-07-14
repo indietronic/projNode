@@ -53,7 +53,8 @@ var _ = require('underscore');
 _.str = require('underscore.string');
 
 var GiocatoriDAO = require("../dao/GiocatoriDAO");
-
+var CacheManager = require("../cache/CacheManager");
+var CacheUtenti = require("../cache/CacheUtenti");
 
 var ROLE = {
     ATT: "ATT",
@@ -77,21 +78,40 @@ router.post('/getGiocatoreByName', function (req, res) {
 
 router.post('/getListaGiocatori', function (req, res) {
     console.log("getGiocatore service");
-    GiocatoriDAO.getAllPlayers().then(function (data) {
-            var giocatori = JSON.parse(JSON.stringify(data));
-            giocatori = _.filter(giocatori, function (giocatore) {
-                var checkNome = _.str.startsWith(giocatore.nome.toUpperCase(), req.body.query.toUpperCase());
-                var checkCognome = _.str.startsWith(giocatore.cognome.toUpperCase(), req.body.query.toUpperCase());
-                var entireName = giocatore.nome.toUpperCase() + " " +  giocatore.cognome.toUpperCase();
-                var checkEntireName = _.str.startsWith(entireName, req.body.query.toUpperCase());
-                return checkNome || checkCognome || checkEntireName;
+    var giocatori = CacheUtenti.getAllPlayers('giocatoriMap');
+    if (giocatori != null) {
+        console.log("cache caricata");
+        giocatori = filterPlayers(giocatori, req.body.query);
+        res.send(giocatori);
+    }
+    else {
+        GiocatoriDAO.getAllPlayers().then(function (data) {
+                var giocatori = JSON.parse(JSON.stringify(data));
+                giocatori = _.filter(giocatori, function (giocatore) {
+                    setFirstRuolo(giocatore);
+                    return true;
+                });
+                CacheUtenti.setAllPlayers('giocatoriMap', giocatori);
+                giocatori = filterPlayers(giocatori, req.body.query);
+                res.send(giocatori);
+            },
+            function (error) {
+                console.log(error);
             });
-            res.send(giocatori);
-        },
-        function (error) {
-            console.log(error);
-        });
+    }
+
 });
+
+function filterPlayers(giocatori, query) {
+    return _.filter(giocatori, function (giocatore) {
+        var checkNome = _.str.startsWith(giocatore.nome.toUpperCase(), query.toUpperCase());
+        var checkCognome = _.str.startsWith(giocatore.cognome.toUpperCase(), query.toUpperCase());
+        var entireName = giocatore.nome.toUpperCase() + " " + giocatore.cognome.toUpperCase();
+        var checkEntireName = _.str.startsWith(entireName, query.toUpperCase());
+        return checkNome || checkCognome || checkEntireName;
+    });
+}
+
 
 function setFirstRuolo(giocatore) {
     if (typeof giocatore.ruoli != 'undefined') {
