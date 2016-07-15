@@ -1,7 +1,19 @@
+
 var CacheManager = {};
-var NodeCache = require( "node-cache" );
-var cache = new NodeCache( { stdTTL: 100, checkperiod: 120 } );
+//var NodeCache = require( "node-cache" );
+var MultiCache = require('multi-level-cache');
+var redisOption = {
+    host: '127.0.0.1',
+    port: 6379
+};
+var cache = new MultiCache( 'node-cache', 'redis', {remoteOptions : redisOption} );
+//var cache = new NodeCache( { stdTTL: 100, checkperiod: 120 } );
 var CacheMap = require("./CacheMap");
+
+
+
+
+
 
 var global =undefined;
 
