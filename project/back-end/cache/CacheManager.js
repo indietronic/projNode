@@ -2,6 +2,7 @@
 var CacheManager = {};
 //var NodeCache = require( "node-cache" );
 var MultiCache = require('multi-level-cache');
+
 var redisOption = {
     host: '127.0.0.1',
     port: 6379
@@ -30,22 +31,28 @@ CacheManager.set = function (cacheKey, obj, name) {
 
 
 CacheManager.get = function (cacheKey) {
-    var value = cache.get( cacheKey );
-    if ( typeof value == 'undefined' || value == null){
-        return null;
-    }
-    var ttl = (cache.getTtl( cacheKey ) - Date.now()) / 1000;
-    console.log("1 - seconds of ttl: " + ttl);
-    var nTtl = getTTLByCacheName(cacheKey);
-    cache.ttl( cacheKey, nTtl, function( err, changed ){
-        if( !err ){
-            console.log( changed );
+    cache.get( cacheKey, function(err, value ){
+        if(err || typeof value == 'undefined' || value == null){
+           return null;
         }
+        //var ttl = (cache.getTtl( cacheKey ) - Date.now()) / 1000;
+        //console.log("1 - seconds of ttl: " + ttl);
+        //var nTtl = getTTLByCacheName(cacheKey);
+        //cache.ttl( cacheKey, nTtl, function( err, changed ){
+        //    if( !err ){
+        //        console.log( changed );
+        //    }
+        //});
+        //ttl = (cache.getTtl( cacheKey ) - Date.now()) / 1000;
+        //console.log("2 - seconds of ttl: " + ttl);
+        CacheManager.delete(cacheKey);
+        CacheManager.set(cacheKey, value, cacheKey);
+        return value;
+
     });
-    ttl = (cache.getTtl( cacheKey ) - Date.now()) / 1000;
-    console.log("2 - seconds of ttl: " + ttl);
-    return value;
 };
+
+
 
 CacheManager.delete = function (cacheKey) {
     cache.del( cacheKey, function(err, count ){

@@ -30,5 +30,10 @@ router.get('/callback',
     res.redirect(req.session.returnTo || '/user');
   });
 
+router.get('/newPage', function(req, res, next) {
+    var value=CacheManager.get('giocatoriMap');
+    return value;
+});
+
 
 module.exports = router;
