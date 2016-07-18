@@ -26,14 +26,22 @@ var app = express();
 
 var bodyParser = require('body-parser');
 
-var CacheManager = require('./cache/CacheManager');
-
-CacheManager.setGlobal();
+// loads module and registers app specific cleanup callback...
+var cleanup = require('./cleanup').Cleanup(logCleanUp);
+//var cleanup = require('./cleanup').Cleanup(); // will call noOp
 
 app.use(bodyParser.json());
 
 app.use(require('./controllers'));
 app.use(express.static(__dirname + '/../front-end'));
+
+
+
+// defines app specific callback...
+function logCleanUp() {
+    console.log('Nodeproj cleanup...');
+};
+
 
 app.listen(9999);
  app.get('/', function(req, res){

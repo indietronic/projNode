@@ -4,9 +4,8 @@
 var CacheManager = require('./CacheManager');
 var CacheUtenti = {};
 
-CacheUtenti.getAllPlayers = function (mapName){
-    return CacheManager.get(mapName);
-
+CacheUtenti.getAllPlayers = function (mapName, callback){
+    CacheManager.get(mapName, callback);
 };
 
 CacheUtenti.setAllPlayers = function (mapName, obj){

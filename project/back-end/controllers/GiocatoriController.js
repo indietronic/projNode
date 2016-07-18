@@ -78,27 +78,29 @@ router.post('/getGiocatoreByName', function (req, res) {
 
 router.post('/getListaGiocatori', function (req, res) {
     console.log("getGiocatore service");
-    var giocatori = CacheUtenti.getAllPlayers('giocatoriMap');
-    if (giocatori != null) {
-        console.log("cache caricata");
-        giocatori = filterPlayers(giocatori, req.body.query);
-        res.send(giocatori);
-    }
-    else {
-        GiocatoriDAO.getAllPlayers().then(function (data) {
-                var giocatori = JSON.parse(JSON.stringify(data));
-                giocatori = _.filter(giocatori, function (giocatore) {
-                    setFirstRuolo(giocatore);
-                    return true;
+    CacheUtenti.getAllPlayers('giocatoriMap', function (giocatori) {
+        if (giocatori != null) {
+            console.log("cache caricata");
+            giocatori = filterPlayers(giocatori, req.body.query);
+            res.send(giocatori);
+        }
+        else {
+            GiocatoriDAO.getAllPlayers().then(function (data) {
+                    var giocatori = JSON.parse(JSON.stringify(data));
+                    giocatori = _.filter(giocatori, function (giocatore) {
+                        setFirstRuolo(giocatore);
+                        return true;
+                    });
+                    CacheUtenti.setAllPlayers('giocatoriMap', giocatori);
+                    giocatori = filterPlayers(giocatori, req.body.query);
+                    res.send(giocatori);
+                },
+                function (error) {
+                    console.log(error);
                 });
-                CacheUtenti.setAllPlayers('giocatoriMap', giocatori);
-                giocatori = filterPlayers(giocatori, req.body.query);
-                res.send(giocatori);
-            },
-            function (error) {
-                console.log(error);
-            });
-    }
+        }
+    });
+    
 
 });
 
