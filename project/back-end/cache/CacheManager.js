@@ -12,15 +12,8 @@ var cache = new MultiCache( 'node-cache', 'redis', {remoteOptions : redisOption,
 var CacheMap = require("./CacheMap");
 
 
-
-
-
-
-var global =undefined;
-
 CacheManager.set = function (cacheKey, obj, name) {
-    //var ttl = getTTLByCacheName(name);
-    var ttl = 15;
+    var ttl = getTTLByCacheName(name);
     cache.set( cacheKey, obj, ttl, function(err, success ){
         if( !err && success ){
             console.log( success );
@@ -49,9 +42,18 @@ CacheManager.get = function (cacheKey, callback) {
         //console.log("2 - seconds of ttl: " + ttl);
         //CacheManager.delete(cacheKey);
         //CacheManager.set(cacheKey, value, cacheKey);
-        return callback(value);
+        var ttl = getTTLByCacheName(cacheKey);
+        cache.set( cacheKey, value, ttl, function(err, success ){
+            if( !err && success ){
+                console.log( success + "updating" );
+                return callback(value);
+            }
+        });
+
 
     });
+
+
 
 };
 

@@ -15,6 +15,9 @@ exports.Cleanup = function Cleanup(callback) {
     // do app specific cleaning before exiting
     process.on('exit', function () {
         process.emit('cleanup');
+        CacheManager.flushAll(function () {
+            process.emit('cleanup');
+        });
     });
 
     // catch ctrl+c event and exit normally
@@ -30,7 +33,9 @@ exports.Cleanup = function Cleanup(callback) {
     process.on('uncaughtException', function (e) {
         console.log('Uncaught Exception...');
         console.log(e.stack);
-        process.exit(99);
+        CacheManager.flushAll(function () {
+            process.exit(99);
+        });
     });
 
 }

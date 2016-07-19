@@ -54,7 +54,7 @@ _.str = require('underscore.string');
 
 var GiocatoriDAO = require("../dao/GiocatoriDAO");
 var CacheManager = require("../cache/CacheManager");
-var CacheUtenti = require("../cache/CacheUtenti");
+var CacheInterface = require("../cache/CacheInterface");
 
 var ROLE = {
     ATT: "ATT",
@@ -78,7 +78,7 @@ router.post('/getGiocatoreByName', function (req, res) {
 
 router.post('/getListaGiocatori', function (req, res) {
     console.log("getGiocatore service");
-    CacheUtenti.getAllPlayers('giocatoriMap', function (giocatori) {
+    CacheInterface.getAllPlayers('giocatoriMap', function (giocatori) {
         if (giocatori != null) {
             console.log("cache caricata");
             giocatori = filterPlayers(giocatori, req.body.query);
@@ -91,7 +91,7 @@ router.post('/getListaGiocatori', function (req, res) {
                         setFirstRuolo(giocatore);
                         return true;
                     });
-                    CacheUtenti.setAllPlayers('giocatoriMap', giocatori);
+                    CacheInterface.setAllPlayers('giocatoriMap', giocatori);
                     giocatori = filterPlayers(giocatori, req.body.query);
                     res.send(giocatori);
                 },
